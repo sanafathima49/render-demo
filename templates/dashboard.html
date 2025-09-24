@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #007b8f;
+        }
+
+        h3 {
+            margin-top: 30px;
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 6px 0;
+            font-size: 16px;
+        }
+
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 16px;
+            text-decoration: none;
+            color: #007b8f;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📊 Model Dashboard</h2>
+        <p><strong>Accuracy:</strong> {{ accuracy }}%</p>
+
+        <h3>Diagnosis Distribution</h3>
+        <img src="{{ chart_url }}" alt="Diagnosis Chart">
+
+        <ul>
+        {% for label, count in label_counts.items() %}
+            <li>{{ label }}: {{ count }} samples</li>
+        {% endfor %}
+        </ul>
+
+        <a href="{{ url_for('index') }}" class="back-link">⬅ Back to Predictor</a>
+    </div>
+</body>
+</html>

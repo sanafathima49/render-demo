@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Symptom Diagnosis Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f9ff;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #007B8F;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 15px;
+            padding: 10px;
+            background: #007B8F;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+        }
+
+        .nav {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .nav a {
+            color: #007B8F;
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Symptom Diagnosis Predictor</h1>
+        <form id="predictForm">
+            <label for="symptoms">Enter symptoms (comma-separated):</label>
+            <textarea id="symptoms" name="symptoms" required></textarea>
+            <button type="submit">Predict Diagnosis</button>
+        </form>
+        <div class="result" id="result"></div>
+
+        <div class="nav">
+            <a href="/dashboard">📊 View Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("predictForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const symptoms = document.getElementById("symptoms").value;
+
+            fetch("/predict_ui", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ symptoms })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById("result");
+                if (data.diagnosis) {
+                    resultDiv.innerHTML = `<strong>Diagnosis:</strong> ${data.diagnosis}`;
+                } else if (data.error) {
+                    resultDiv.innerHTML = `<span style="color:red;"><strong>Error:</strong> ${data.error}</span>`;
+                }
+            })
+            .catch(error => {
+                document.getElementById("result").innerText = "Something went wrong.";
+                console.error("Error:", error);
+            });
+        });
+    </script>
+</body>
+</html>
